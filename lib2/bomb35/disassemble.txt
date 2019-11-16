@@ -484,48 +484,56 @@ Disassembly of section .text:
   401093:	55                   	push   %rbp
   401094:	53                   	push   %rbx
   401095:	48 83 ec 58          	sub    $0x58,%rsp
-  401099:	48 8d 74 24 30       	lea    0x30(%rsp),%rsi
+  401099:	48 8d 74 24 30       	lea    0x30(%rsp),%rsi #以rsp+30获取六个数字
   40109e:	e8 4e 04 00 00       	callq  4014f1 <read_six_numbers>
   4010a3:	4c 8d 6c 24 30       	lea    0x30(%rsp),%r13
   4010a8:	41 bc 00 00 00 00    	mov    $0x0,%r12d
+
   4010ae:	4c 89 ed             	mov    %r13,%rbp
   4010b1:	41 8b 45 00          	mov    0x0(%r13),%eax
-  4010b5:	83 e8 01             	sub    $0x1,%eax
+  4010b5:	83 e8 01             	sub    $0x1,%eax #测试每个数字减一后是否小于5,0不行
   4010b8:	83 f8 05             	cmp    $0x5,%eax
   4010bb:	76 05                	jbe    4010c2 <phase_6+0x33>
   4010bd:	e8 f9 03 00 00       	callq  4014bb <explode_bomb>
-  4010c2:	41 83 c4 01          	add    $0x1,%r12d
-  4010c6:	41 83 fc 06          	cmp    $0x6,%r12d
+  4010c2:	41 83 c4 01          	add    $0x1,%r12d  
+  4010c6:	41 83 fc 06          	cmp    $0x6,%r12d #r12d每次加一，只要不等于6就跳转
   4010ca:	75 07                	jne    4010d3 <phase_6+0x44>
-  4010cc:	be 00 00 00 00       	mov    $0x0,%esi
+  4010cc:	be 00 00 00 00       	mov    $0x0,%esi  #这里rsi改变
   4010d1:	eb 42                	jmp    401115 <phase_6+0x86>
   4010d3:	44 89 e3             	mov    %r12d,%ebx
-  4010d6:	48 63 c3             	movslq %ebx,%rax
+  4010d6:	48 63 c3             	movslq %ebx,%rax   #转换为long存入rax 
   4010d9:	8b 44 84 30          	mov    0x30(%rsp,%rax,4),%eax
-  4010dd:	39 45 00             	cmp    %eax,0x0(%rbp)
+  4010dd:	39 45 00             	cmp    %eax,0x0(%rbp)  #判断余下的是否和这个相同
   4010e0:	75 05                	jne    4010e7 <phase_6+0x58>
   4010e2:	e8 d4 03 00 00       	callq  4014bb <explode_bomb>
   4010e7:	83 c3 01             	add    $0x1,%ebx
   4010ea:	83 fb 05             	cmp    $0x5,%ebx
-  4010ed:	7e e7                	jle    4010d6 <phase_6+0x47>
-  4010ef:	49 83 c5 04          	add    $0x4,%r13
+  4010ed:	7e e7                	jle    4010d6 <phase_6+0x47># 内部循环
+  4010ef:	49 83 c5 04          	add    $0x4,%r13  #获取下一个数的地址
   4010f3:	eb b9                	jmp    4010ae <phase_6+0x1f>
-  4010f5:	48 8b 52 08          	mov    0x8(%rdx),%rdx
+
+  4010f5:	48 8b 52 08          	mov    0x8(%rdx),%rdx  # 此处rdx应该是在之后533赋的初值   似乎移动后还是地址
   4010f9:	83 c0 01             	add    $0x1,%eax
   4010fc:	39 c8                	cmp    %ecx,%eax
   4010fe:	75 f5                	jne    4010f5 <phase_6+0x66>
+
   401100:	eb 05                	jmp    401107 <phase_6+0x78>
+
   401102:	ba f0 42 60 00       	mov    $0x6042f0,%edx
-  401107:	48 89 14 74          	mov    %rdx,(%rsp,%rsi,2)
+
+  401107:	48 89 14 74          	mov    %rdx,(%rsp,%rsi,2) #第一次到此处rsi为4
   40110b:	48 83 c6 04          	add    $0x4,%rsi
-  40110f:	48 83 fe 18          	cmp    $0x18,%rsi
+  40110f:	48 83 fe 18          	cmp    $0x18,%rsi  #等于18则跳转 此处比的不是rsi内容吗，rsi原本是地址
   401113:	74 15                	je     40112a <phase_6+0x9b>
+
   401115:	8b 4c 34 30          	mov    0x30(%rsp,%rsi,1),%ecx
   401119:	83 f9 01             	cmp    $0x1,%ecx
   40111c:	7e e4                	jle    401102 <phase_6+0x73>
-  40111e:	b8 01 00 00 00       	mov    $0x1,%eax
+
+  40111e:	b8 01 00 00 00       	mov    $0x1,%eax    #eax，edx初始化
   401123:	ba f0 42 60 00       	mov    $0x6042f0,%edx
   401128:	eb cb                	jmp    4010f5 <phase_6+0x66>
+
   40112a:	48 8b 1c 24          	mov    (%rsp),%rbx
   40112e:	48 8d 44 24 08       	lea    0x8(%rsp),%rax
   401133:	48 8d 74 24 30       	lea    0x30(%rsp),%rsi
@@ -535,8 +543,10 @@ Disassembly of section .text:
   401142:	48 83 c0 08          	add    $0x8,%rax
   401146:	48 39 f0             	cmp    %rsi,%rax
   401149:	74 05                	je     401150 <phase_6+0xc1>
+
   40114b:	48 89 d1             	mov    %rdx,%rcx
   40114e:	eb eb                	jmp    40113b <phase_6+0xac>
+
   401150:	48 c7 42 08 00 00 00 	movq   $0x0,0x8(%rdx)
   401157:	00 
   401158:	bd 05 00 00 00       	mov    $0x5,%ebp
