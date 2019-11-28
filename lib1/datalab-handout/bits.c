@@ -272,6 +272,7 @@ int fitsBits(int x, int n) {
  *   Max ops: 15
  *   Rating: 2
  */
+//如果是负数，则需要+2^n-1
 int divpwr2(int x, int n) {
 	int signx=x>>31;
 	int mask = (1<<n)+(~0);//2^n-1
@@ -383,13 +384,14 @@ unsigned float_i2f(int x) {
     }
     if ((afterShift & 0x01ff)>0x0100)
         flag=1;
-    else if ((afterShift & 0x03ff)==0x0300)
+    else if ((afterShift & 0x03ff)==0x0300) //round to even 如果为1,则要加1,否则保持
         flag=1;
     else
         flag=0;
 
     return sign + (afterShift>>9) + ((159-shiftLeft)<<23) + flag;
 }
+//此处159的原因(127+(32-shiftLeft))
 /* 
  * float_twice - Return bit-level equivalent of expression 2*f for
  *   floating point argument f.
