@@ -355,7 +355,7 @@ Disassembly of section .text:
 
 0000000000400ef3 <phase_3>:
   400ef3:	48 83 ec 18          	sub    $0x18,%rsp
-  400ef7:	48 8d 4c 24 08       	lea    0x8(%rsp),%rcx #第一个参数
+  400ef7:	48 8d 4c 24 08       	lea    0x8(%rsp),%rcx #第二个参数
   400efc:	48 8d 54 24 0c       	lea    0xc(%rsp),%rdx #第一个参数
   400f01:	be d5 26 40 00       	mov    $0x4026d5,%esi
   400f06:	b8 00 00 00 00       	mov    $0x0,%eax
@@ -366,7 +366,7 @@ Disassembly of section .text:
   400f1a:	83 7c 24 0c 07       	cmpl   $0x7,0xc(%rsp)
   400f1f:	77 66                	ja     400f87 <phase_3+0x94>
   400f21:	8b 44 24 0c          	mov    0xc(%rsp),%eax
-  400f25:	ff 24 c5 70 24 40 00 	jmpq   *0x402470(,%rax,8)
+  400f25:	ff 24 c5 70 24 40 00 	jmpq   *0x402470(,%rax,8)#查看402470中存储的地址，有8种，每一种有对应的另一个参数的值
   400f2c:	b8 00 00 00 00       	mov    $0x0,%eax
   400f31:	eb 05                	jmp    400f38 <phase_3+0x45>
   400f33:	b8 97 01 00 00       	mov    $0x197,%eax
@@ -429,7 +429,7 @@ Disassembly of section .text:
   400fe0:	48 83 ec 18          	sub    $0x18,%rsp
   400fe4:	48 8d 4c 24 0c       	lea    0xc(%rsp),%rcx #第二个数
   400fe9:	48 8d 54 24 08       	lea    0x8(%rsp),%rdx #第一个数
-  400fee:	be d5 26 40 00       	mov    $0x4026d5,%esi
+  400fee:	be d5 26 40 00       	mov    $0x4026d5,%esi #查看此地址发现是两个%d
   400ff3:	b8 00 00 00 00       	mov    $0x0,%eax
   400ff8:	e8 c3 fb ff ff       	callq  400bc0 <__isoc99_sscanf@plt>
   400ffd:	83 f8 02             	cmp    $0x2,%eax
@@ -491,7 +491,7 @@ Disassembly of section .text:
 
   4010ae:	4c 89 ed             	mov    %r13,%rbp
   4010b1:	41 8b 45 00          	mov    0x0(%r13),%eax
-  4010b5:	83 e8 01             	sub    $0x1,%eax #测试每个数字减一后是否小于5,0不行
+  4010b5:	83 e8 01             	sub    $0x1,%eax #测试每个数字减一后是否小于等于5,0不行
   4010b8:	83 f8 05             	cmp    $0x5,%eax
   4010bb:	76 05                	jbe    4010c2 <phase_6+0x33>
   4010bd:	e8 f9 03 00 00       	callq  4014bb <explode_bomb>
@@ -512,32 +512,37 @@ Disassembly of section .text:
   4010ef:	49 83 c5 04          	add    $0x4,%r13  #获取下一个数的地址
   4010f3:	eb b9                	jmp    4010ae <phase_6+0x1f>
 
-  4010f5:	48 8b 52 08          	mov    0x8(%rdx),%rdx  # 此处rdx应该是在之后533赋的初值   似乎移动后还是地址
+-------------------------------------------------------------------
+  4010f5:	48 8b 52 08          	mov    0x8(%rdx),%rdx #每一次循环他就读上一次读出的值作为地址指向的值
   4010f9:	83 c0 01             	add    $0x1,%eax
-  4010fc:	39 c8                	cmp    %ecx,%eax
-  4010fe:	75 f5                	jne    4010f5 <phase_6+0x66>
+  4010fc:	39 c8                	cmp    %ecx,%eax #比较第一个数与rax
+  4010fe:	75 f5                	jne    4010f5 <phase_6+0x66>#不相等就循环到相等
 
   401100:	eb 05                	jmp    401107 <phase_6+0x78>
 
   401102:	ba f0 42 60 00       	mov    $0x6042f0,%edx
 
-  401107:	48 89 14 74          	mov    %rdx,(%rsp,%rsi,2) #第一次到此处rsi为4
+  401107:	48 89 14 74          	mov    %rdx,(%rsp,%rsi,2) #第一次时rsi为0  存了六个地址
   40110b:	48 83 c6 04          	add    $0x4,%rsi
-  40110f:	48 83 fe 18          	cmp    $0x18,%rsi  #等于18则跳转 此处比的不是rsi内容吗，rsi原本是地址
+  40110f:	48 83 fe 18          	cmp    $0x18,%rsi  #等于24则跳转 此处比的不是rsi内容吗，rsi原本是地址
   401113:	74 15                	je     40112a <phase_6+0x9b>
 
   401115:	8b 4c 34 30          	mov    0x30(%rsp,%rsi,1),%ecx
-  401119:	83 f9 01             	cmp    $0x1,%ecx
+  401119:	83 f9 01             	cmp    $0x1,%ecx #其实就是如果是1就直接从1102开始就行
   40111c:	7e e4                	jle    401102 <phase_6+0x73>
 
   40111e:	b8 01 00 00 00       	mov    $0x1,%eax    #eax，edx初始化
   401123:	ba f0 42 60 00       	mov    $0x6042f0,%edx
   401128:	eb cb                	jmp    4010f5 <phase_6+0x66>
 
+------------------------------------------------------------------------
+#rsp存了六个地址 按照输入的六个数的顺序
   40112a:	48 8b 1c 24          	mov    (%rsp),%rbx
   40112e:	48 8d 44 24 08       	lea    0x8(%rsp),%rax
   401133:	48 8d 74 24 30       	lea    0x30(%rsp),%rsi
   401138:	48 89 d9             	mov    %rbx,%rcx
+  -------------------------------
+  #把rsp中的下一个地址存放在上一个地址所指的后八个字节
   40113b:	48 8b 10             	mov    (%rax),%rdx
   40113e:	48 89 51 08          	mov    %rdx,0x8(%rcx)
   401142:	48 83 c0 08          	add    $0x8,%rax
@@ -546,9 +551,12 @@ Disassembly of section .text:
 
   40114b:	48 89 d1             	mov    %rdx,%rcx
   40114e:	eb eb                	jmp    40113b <phase_6+0xac>
+------------------------------------------------------------------------
+
 
   401150:	48 c7 42 08 00 00 00 	movq   $0x0,0x8(%rdx)
-  401157:	00 
+  401157:	00
+----------------------------------------------------------------
   401158:	bd 05 00 00 00       	mov    $0x5,%ebp
   40115d:	48 8b 43 08          	mov    0x8(%rbx),%rax
   401161:	8b 00                	mov    (%rax),%eax
@@ -558,6 +566,8 @@ Disassembly of section .text:
   40116c:	48 8b 5b 08          	mov    0x8(%rbx),%rbx
   401170:	83 ed 01             	sub    $0x1,%ebp
   401173:	75 e8                	jne    40115d <phase_6+0xce>
+
+
   401175:	48 83 c4 58          	add    $0x58,%rsp
   401179:	5b                   	pop    %rbx
   40117a:	5d                   	pop    %rbp

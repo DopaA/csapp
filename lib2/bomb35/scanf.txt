@@ -1,0 +1,62 @@
+Dump of assembler code for function __isoc99_sscanf:
+   0x00007ffff7e26780 <+0>:     endbr64 
+   0x00007ffff7e26784 <+4>:     push   %r13
+   0x00007ffff7e26786 <+6>:     mov    %rdi,%r13
+   0x00007ffff7e26789 <+9>:     push   %r12
+   0x00007ffff7e2678b <+11>:    mov    %rsi,%r12
+   0x00007ffff7e2678e <+14>:    push   %rbp
+   0x00007ffff7e2678f <+15>:    sub    $0x1d0,%rsp
+   0x00007ffff7e26796 <+22>:    mov    %rdx,0x130(%rsp)
+   0x00007ffff7e2679e <+30>:    mov    %rcx,0x138(%rsp)
+   0x00007ffff7e267a6 <+38>:    mov    %r8,0x140(%rsp)
+   0x00007ffff7e267ae <+46>:    mov    %r9,0x148(%rsp)
+   0x00007ffff7e267b6 <+54>:    test   %al,%al
+   0x00007ffff7e267b8 <+56>:    je     0x7ffff7e267fa <__isoc99_sscanf+122>
+   0x00007ffff7e267ba <+58>:    movaps %xmm0,0x150(%rsp)
+   0x00007ffff7e267c2 <+66>:    movaps %xmm1,0x160(%rsp)
+   0x00007ffff7e267ca <+74>:    movaps %xmm2,0x170(%rsp)
+   0x00007ffff7e267d2 <+82>:    movaps %xmm3,0x180(%rsp)
+   0x00007ffff7e267da <+90>:    movaps %xmm4,0x190(%rsp)
+   0x00007ffff7e267e2 <+98>:    movaps %xmm5,0x1a0(%rsp)
+   0x00007ffff7e267ea <+106>:   movaps %xmm6,0x1b0(%rsp)
+   0x00007ffff7e267f2 <+114>:   movaps %xmm7,0x1c0(%rsp)
+   0x00007ffff7e267fa <+122>:   lea    0x20(%rsp),%rbp
+   0x00007ffff7e267ff <+127>:   xor    %r8d,%r8d
+   0x00007ffff7e26802 <+130>:   xor    %ecx,%ecx
+   0x00007ffff7e26804 <+132>:   mov    $0xffffffff,%edx
+   0x00007ffff7e26809 <+137>:   mov    %fs:0x28,%rax
+   0x00007ffff7e26812 <+146>:   mov    %rax,0x118(%rsp)
+   0x00007ffff7e2681a <+154>:   xor    %eax,%eax
+   0x00007ffff7e2681c <+156>:   mov    $0x8000,%esi
+   0x00007ffff7e26821 <+161>:   mov    %rbp,%rdi
+   0x00007ffff7e26824 <+164>:   movq   $0x0,0xa8(%rsp)
+   0x00007ffff7e26830 <+176>:   callq  0x7ffff7e51bc0 <_IO_no_init>
+   0x00007ffff7e26835 <+181>:   lea    0x169b84(%rip),%rax        # 0x7ffff7f903c0 <_IO_str_jumps>
+   0x00007ffff7e2683c <+188>:   xor    %ecx,%ecx
+   0x00007ffff7e2683e <+190>:   xor    %edx,%edx
+   0x00007ffff7e26840 <+192>:   mov    %r13,%rsi
+--Type <RET> for more, q to quit, c to continue without paging--c
+   0x00007ffff7e26843 <+195>:   mov    %rbp,%rdi
+   0x00007ffff7e26846 <+198>:   mov    %rax,0xf8(%rsp)
+   0x00007ffff7e2684e <+206>:   callq  0x7ffff7e53150 <_IO_str_init_static_internal>
+   0x00007ffff7e26853 <+211>:   mov    $0x2,%ecx
+   0x00007ffff7e26858 <+216>:   mov    %r12,%rsi
+   0x00007ffff7e2685b <+219>:   mov    %rbp,%rdi
+   0x00007ffff7e2685e <+222>:   lea    0x1f0(%rsp),%rax
+   0x00007ffff7e26866 <+230>:   lea    0x8(%rsp),%rdx
+   0x00007ffff7e2686b <+235>:   movl   $0x10,0x8(%rsp)
+   0x00007ffff7e26873 <+243>:   mov    %rax,0x10(%rsp)
+   0x00007ffff7e26878 <+248>:   lea    0x120(%rsp),%rax
+   0x00007ffff7e26880 <+256>:   movl   $0x30,0xc(%rsp)
+   0x00007ffff7e26888 <+264>:   mov    %rax,0x18(%rsp)
+   0x00007ffff7e2688d <+269>:   callq  0x7ffff7e26f90 <__vfscanf_internal>
+   0x00007ffff7e26892 <+274>:   mov    0x118(%rsp),%rcx
+   0x00007ffff7e2689a <+282>:   xor    %fs:0x28,%rcx
+   0x00007ffff7e268a3 <+291>:   jne    0x7ffff7e268b2 <__isoc99_sscanf+306>
+   0x00007ffff7e268a5 <+293>:   add    $0x1d0,%rsp
+   0x00007ffff7e268ac <+300>:   pop    %rbp
+   0x00007ffff7e268ad <+301>:   pop    %r12
+   0x00007ffff7e268af <+303>:   pop    %r13
+   0x00007ffff7e268b1 <+305>:   retq   
+   0x00007ffff7e268b2 <+306>:   callq  0x7ffff7edd0f0 <__stack_chk_fail>
+
